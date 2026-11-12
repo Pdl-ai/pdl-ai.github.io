@@ -373,3 +373,31 @@ body::-webkit-scrollbar-thumb,
 .animate-view {
   animation: fadeSlideUp 0.18s ease-out forwards;
 }
+
+/* Discord Voice Channel User Limit Pill */
+.voice-limit-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  overflow: hidden;
+  background-color: #1e1f22;
+  border: 1px solid #2b2d31;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #949ba4;
+  font-variant-numeric: tabular-nums;
+}
+
+.voice-limit-current {
+  padding: 4px 6px 4px 8px;
+  background-color: #1e1f22;
+}
+
+.voice-limit-max {
+  padding: 4px 8px 4px 9px;
+  background-color: #2b2d31;
+  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0% 100%);
+  margin-left: -3px;
+}

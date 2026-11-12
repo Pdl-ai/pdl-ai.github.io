@@ -5,6 +5,7 @@ const BOT_CLIENT_ID = "1294035883309142026";
 const CATEGORY_ICONS = {
   music: `<span class="w-7 h-7 rounded-lg bg-purple-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></span>`,
   moderation: `<span class="w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></span>`,
+  tickets: `<span class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22 10V6c0-1.11-.9-2-2-2H4c-1.1 0-1.99.89-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2z"/></svg></span>`,
   utility: `<span class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>`,
 };
 
@@ -18,6 +19,42 @@ const WORKBENCH_COMMANDS = {
       args: ["query", "source"],
       botReply:
         "This command plays a song or a full playlist in your voice channel. Pass a track name or link in <span class='discord-inline-code'>query</span> and optionally pick YouTube or SoundCloud in <span class='discord-inline-code'>source</span>.",
+    },
+    {
+      name: "/music playlist save",
+      args: ["name"],
+      botReply:
+        "Saves the active server playback queue as a personal playlist under your chosen <span class='discord-inline-code'>name</span> so you can load it anytime.",
+    },
+    {
+      name: "/music playlist play",
+      args: ["name"],
+      botReply:
+        "Loads and immediately starts playing your saved personal playlist matching <span class='discord-inline-code'>name</span> in your voice channel.",
+    },
+    {
+      name: "/music playlist list",
+      args: [],
+      botReply:
+        "Lists all your saved personal playlists with an interactive menu so you can pick and launch any playlist with one click.",
+    },
+    {
+      name: "/music playlist delete",
+      args: ["name"],
+      botReply:
+        "Removes a saved personal playlist matching <span class='discord-inline-code'>name</span> from your profile.",
+    },
+    {
+      name: "/music seek",
+      args: ["position"],
+      botReply:
+        "Jumps directly to a specific timestamp in the currently playing track using a <span class='discord-inline-code'>position</span> such as 1:30 or 90s.",
+    },
+    {
+      name: "/music shuffle",
+      args: [],
+      botReply:
+        "Randomizes the playback order of all upcoming tracks waiting in your server queue.",
     },
     {
       name: "/music queue",
@@ -56,10 +93,28 @@ const WORKBENCH_COMMANDS = {
         "Pauses the current track right where it is so you can resume it later with <span class='discord-inline-code'>/music resume</span>.",
     },
     {
-      name: "/vocal-connect",
+      name: "/music resume",
+      args: [],
+      botReply:
+        "Resumes audio playback of a paused track right from the moment it was paused.",
+    },
+    {
+      name: "/music stop",
+      args: [],
+      botReply:
+        "Stops active audio playback, clears the server queue, and cleanly leaves the voice channel.",
+    },
+    {
+      name: "/vocal connect",
       args: [],
       botReply:
         "Summons me directly into the voice channel you are currently connected to so I am ready for audio playback.",
+    },
+    {
+      name: "/vocal disconnect",
+      args: [],
+      botReply:
+        "Disconnects me from the active voice channel and ends the current audio session.",
     },
   ],
   moderation: [
@@ -82,6 +137,12 @@ const WORKBENCH_COMMANDS = {
         "Revokes an active server ban using the user Discord ID in <span class='discord-inline-code'>user_id</span> so they can rejoin the server.",
     },
     {
+      name: "/kick",
+      args: ["target", "reason"],
+      botReply:
+        "Expels a <span class='discord-inline-code'>target</span> member from the server and records the action and <span class='discord-inline-code'>reason</span> in the server disciplinary history.",
+    },
+    {
       name: "/mute",
       args: ["target", "duration", "reason"],
       botReply:
@@ -99,6 +160,80 @@ const WORKBENCH_COMMANDS = {
       botReply:
         "Sends an official warning notice to a <span class='discord-inline-code'>target</span> member and records the <span class='discord-inline-code'>reason</span> for server moderators.",
     },
+    {
+      name: "/offenses view",
+      args: ["target"],
+      botReply:
+        "Displays the full disciplinary history for a <span class='discord-inline-code'>target</span> member, including total warnings, timeouts, kicks, and bans.",
+    },
+    {
+      name: "/offenses remove",
+      args: ["id"],
+      botReply:
+        "Deletes a specific disciplinary record from the server logs using its unique offense <span class='discord-inline-code'>id</span> number.",
+    },
+    {
+      name: "/offenses clear",
+      args: ["target"],
+      botReply:
+        "Wipes all recorded disciplinary offenses for a <span class='discord-inline-code'>target</span> member on your server.",
+    },
+    {
+      name: "/raidmode",
+      args: ["action", "reason"],
+      botReply:
+        "Toggles emergency server raid lockdown. Setting <span class='discord-inline-code'>action</span> to enable pauses all server invites and elevates verification requirements.",
+    },
+    {
+      name: "/lock",
+      args: ["channel"],
+      botReply:
+        "Locks a text <span class='discord-inline-code'>channel</span> immediately so regular members cannot send new messages or create threads.",
+    },
+    {
+      name: "/unlock",
+      args: ["channel"],
+      botReply:
+        "Unlocks a previously restricted text <span class='discord-inline-code'>channel</span> and restores normal messaging permissions for members.",
+    },
+  ],
+  tickets: [
+    {
+      name: "/ticket setup",
+      args: ["channel", "category", "role", "logs"],
+      botReply:
+        "Installs the interactive support ticket creation panel in <span class='discord-inline-code'>channel</span> and links your ticket <span class='discord-inline-code'>category</span>, staff <span class='discord-inline-code'>role</span>, and audit <span class='discord-inline-code'>logs</span>.",
+    },
+    {
+      name: "/ticket config",
+      args: ["category", "role", "logs", "limit", "enabled"],
+      botReply:
+        "Views or updates your server support ticket settings, including the staff <span class='discord-inline-code'>role</span>, per-user ticket <span class='discord-inline-code'>limit</span>, and system status.",
+    },
+    {
+      name: "/ticket close",
+      args: ["reason"],
+      botReply:
+        "Closes the current support ticket channel, locks member messaging, and dispatches a summary with your <span class='discord-inline-code'>reason</span> to the ticket log channel.",
+    },
+    {
+      name: "/ticket open",
+      args: [],
+      botReply:
+        "Reopens a closed support ticket channel and restores messaging access for the ticket creator.",
+    },
+    {
+      name: "/ticket add",
+      args: ["member"],
+      botReply:
+        "Grants an additional <span class='discord-inline-code'>member</span> permission to view and participate in the current support ticket channel.",
+    },
+    {
+      name: "/ticket remove",
+      args: ["member"],
+      botReply:
+        "Revokes access for a <span class='discord-inline-code'>member</span> from the current support ticket channel.",
+    },
   ],
   utility: [
     {
@@ -114,6 +249,42 @@ const WORKBENCH_COMMANDS = {
         "Opens the server configuration panel for administrators to choose authorized AI chat channels, Anti-Scam monitored channels, alert logs, and automatic sanctions.",
     },
     {
+      name: "/profile",
+      args: ["target"],
+      botReply:
+        "Displays a member server profile card showing roles, join dates, saved personal music playlists, and disciplinary record summaries.",
+    },
+    {
+      name: "/checkurl",
+      args: ["url"],
+      botReply:
+        "Scans any web address or domain passed in <span class='discord-inline-code'>url</span> on demand to detect phishing, malware, or scam threats.",
+    },
+    {
+      name: "/memory inspect",
+      args: [],
+      botReply:
+        "Displays real-time AI conversation memory stats for the current channel, including active dialogue turns, ambient timeline events, and token usage.",
+    },
+    {
+      name: "/memory reset",
+      args: [],
+      botReply:
+        "Wipes the active AI conversation context and ambient timeline in the current channel so Pdl.ai starts fresh.",
+    },
+    {
+      name: "/say",
+      args: ["message", "title", "channel"],
+      botReply:
+        "Publishes a clean formatted announcement with your <span class='discord-inline-code'>title</span> and <span class='discord-inline-code'>message</span> in the selected <span class='discord-inline-code'>channel</span>.",
+    },
+    {
+      name: "/feedback",
+      args: ["message"],
+      botReply:
+        "Sends your bug report or feature idea written in <span class='discord-inline-code'>message</span> directly to the development team.",
+    },
+    {
       name: "/ping",
       args: [],
       botReply:
@@ -125,18 +296,6 @@ const WORKBENCH_COMMANDS = {
       botReply:
         "Shares direct buttons to invite me to another Discord server or join the official Pdl.ai support server.",
     },
-    {
-      name: "/feedback",
-      args: ["message"],
-      botReply:
-        "Sends your bug report or feature idea written in <span class='discord-inline-code'>message</span> directly to the development team.",
-    },
-    {
-      name: "/say",
-      args: ["message", "title", "channel"],
-      botReply:
-        "Publishes a clean formatted announcement with your <span class='discord-inline-code'>title</span> and <span class='discord-inline-code'>message</span> in the selected <span class='discord-inline-code'>channel</span>.",
-    },
   ],
 };
 
@@ -144,7 +303,7 @@ const BENTO_SONGS = [
   {
     title: "Harder, Better, Faster, Stronger",
     artist: "Daft Punk • Discovery",
-    loop: "Loop: Queue",
+    loop: "Playlist: Late Night Vibes",
   },
   {
     title: "Instant Crush",
@@ -154,7 +313,7 @@ const BENTO_SONGS = [
   {
     title: "Genesis",
     artist: "Justice • Cross",
-    loop: "Loop: Queue",
+    loop: "Shuffle: Active",
   },
 ];
 
@@ -326,7 +485,7 @@ function renderWorkbench() {
         .join("");
 
       syntaxBar.innerHTML = `
-        <span class="font-mono-code font-bold text-sm text-white bg-[#5865f2] px-2.5 py-0.5 rounded">
+        <span class="font-mono-code font-bold text-sm text-white">
           ${selected.name}
         </span>
         ${argsHTML}
@@ -346,7 +505,7 @@ function renderWorkbench() {
             <img src="./images/profils/tomiitomii301.webp" alt="Member" class="w-4 h-4 rounded-full object-cover" />
             <span class="font-semibold text-white">tomiitomii</span>
             <span>used</span>
-            <span class="font-mono-code font-semibold text-[#5865f2] bg-[#5865f2]/15 px-1.5 py-0.5 rounded">${selected.name}</span>
+            <span class="font-mono-code font-semibold text-white">${selected.name}</span>
           </div>
 
           <!-- Realistic Bot Chat Message -->
@@ -430,20 +589,31 @@ async function syncDiscordWidget() {
   }
 
   const channelsEl = document.getElementById("widget-channels");
+  const allMembers = Array.isArray(data.members) ? data.members : fallback.members;
   if (channelsEl) {
     const channels = Array.isArray(data.channels) ? data.channels.slice() : fallback.channels;
     channels.sort((a, b) => (a.position || 0) - (b.position || 0));
     channelsEl.innerHTML = channels
       .map((ch) => {
+        const cleanName = sanitizeLabel(ch.name);
+        const isAfk = cleanName.toLowerCase().includes("afk");
+        const maxSlots = isAfk ? "30" : "25";
+        const activeInVoice = ch.id
+          ? allMembers.filter((m) => m.channel_id === ch.id).length
+          : 0;
+        const currentSlots = String(activeInVoice).padStart(2, "0");
         return `
           <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-xs">
             <div class="flex items-center gap-2 text-white/85 font-medium">
               <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 3a9 9 0 0 0-9 9v7c0 1.1.9 2 2 2h4v-8H5v-1a7 7 0 0 1 14 0v1h-4v8h4c1.1 0 2-.9 2-2v-7a9 9 0 0 0-9-9Z"/>
               </svg>
-              <span>${sanitizeLabel(ch.name)}</span>
+              <span>${cleanName}</span>
             </div>
-            <span class="text-[10px] font-mono-code text-emerald-500">Active</span>
+            <span class="voice-limit-pill">
+              <span class="voice-limit-current">${currentSlots}</span>
+              <span class="voice-limit-max">${maxSlots}</span>
+            </span>
           </div>
         `;
       })
