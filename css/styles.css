@@ -154,11 +154,6 @@ body::-webkit-scrollbar-thumb,
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 24px;
   overflow: hidden;
-  transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.spotlight-card:hover {
-  border-color: rgba(239, 68, 68, 0.35);
 }
 
 /* Hero Floating Discord Layers */
