@@ -640,9 +640,42 @@ async function syncDiscordWidget() {
 }
 
 /**
- * Initializes GSAP entrance motion.
+ * Initializes macOS window animations and GSAP ScrollTrigger effects.
  */
 function initVisualEffects() {
+  // Interactive macOS traffic lights and titlebar double-click zoom
+  document.querySelectorAll(".spotlight-card, .discord-chat-window").forEach((win) => {
+    const maxDot = win.querySelector(".macos-dot-max");
+    const minDot = win.querySelector(".macos-dot-min");
+    const titlebar = win.querySelector(".macos-titlebar, .discord-chat-header");
+
+    if (maxDot) {
+      maxDot.addEventListener("click", (e) => {
+        e.stopPropagation();
+        win.classList.toggle("macos-window-zoomed");
+      });
+    }
+
+    if (minDot) {
+      minDot.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (typeof gsap !== "undefined") {
+          gsap.fromTo(
+            win,
+            { scale: 0.96, y: 8 },
+            { scale: 1, y: 0, duration: 0.55, ease: "elastic.out(1, 0.5)" },
+          );
+        }
+      });
+    }
+
+    if (titlebar) {
+      titlebar.addEventListener("dblclick", () => {
+        win.classList.toggle("macos-window-zoomed");
+      });
+    }
+  });
+
   if (typeof gsap === "undefined") {
     return;
   }
@@ -651,20 +684,139 @@ function initVisualEffects() {
     gsap.registerPlugin(ScrollTrigger);
   }
 
+  // Hero entrance with macOS spring curve
   gsap.from("#hero-copy > *", {
     opacity: 0,
-    y: 30,
-    duration: 0.85,
+    y: 34,
+    duration: 0.95,
     stagger: 0.12,
-    ease: "power3.out",
+    ease: "expo.out",
   });
 
-  gsap.from("#hero-visual", {
+  gsap.from("#hero-visual .spotlight-card", {
     opacity: 0,
-    scale: 0.94,
+    y: 40,
+    scale: 0.92,
+    duration: 1.1,
+    delay: 0.15,
+    ease: "expo.out",
+  });
+
+  if (typeof ScrollTrigger === "undefined") {
+    return;
+  }
+
+  // Subtle Hero scroll parallax
+  gsap.to("#hero-visual .spotlight-card", {
+    yPercent: -10,
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#hero",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+    },
+  });
+
+  // Section titles scroll reveal
+  document.querySelectorAll("#features h2, #commands h2, #testimonials h2").forEach((heading) => {
+    gsap.from(heading, {
+      opacity: 0,
+      y: 32,
+      duration: 0.9,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: heading,
+        start: "top 86%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
+
+  // Capabilities macOS windows staggered scroll reveal
+  gsap.utils.toArray("#features .spotlight-card").forEach((card, index) => {
+    gsap.from(card, {
+      opacity: 0,
+      y: 48,
+      scale: 0.95,
+      duration: 0.9,
+      delay: (index % 2) * 0.1,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: card,
+        start: "top 88%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
+
+  // Slash Commands studio scroll reveal
+  gsap.from("#commands .macos-segmented", {
+    opacity: 0,
+    y: 24,
+    duration: 0.8,
+    ease: "expo.out",
+    scrollTrigger: {
+      trigger: "#commands",
+      start: "top 82%",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  gsap.from("#wb-chips-container", {
+    opacity: 0,
+    x: -28,
+    duration: 0.9,
+    ease: "expo.out",
+    scrollTrigger: {
+      trigger: "#wb-chips-container",
+      start: "top 85%",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  gsap.from("#commands .discord-chat-window", {
+    opacity: 0,
+    x: 28,
+    scale: 0.96,
+    duration: 0.95,
+    ease: "expo.out",
+    scrollTrigger: {
+      trigger: "#commands .discord-chat-window",
+      start: "top 85%",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  // Community testimonials macOS windows scroll reveal
+  gsap.utils.toArray("#testimonials .spotlight-card").forEach((card, index) => {
+    gsap.from(card, {
+      opacity: 0,
+      y: 44,
+      scale: 0.95,
+      duration: 0.85,
+      delay: index * 0.1,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: card,
+        start: "top 88%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
+
+  // Live Server macOS window scroll reveal
+  gsap.from("#community .spotlight-card", {
+    opacity: 0,
+    y: 52,
+    scale: 0.96,
     duration: 1,
-    delay: 0.2,
-    ease: "power3.out",
+    ease: "expo.out",
+    scrollTrigger: {
+      trigger: "#community .spotlight-card",
+      start: "top 86%",
+      toggleActions: "play none none reverse",
+    },
   });
 }
 
