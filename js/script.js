@@ -3,10 +3,10 @@ const WIDGET_JSON_URL = "https://discord.com/api/guilds/1460035966931570886/widg
 const BOT_CLIENT_ID = "1294035883309142026";
 
 const CATEGORY_ICONS = {
-  music: `<span class="w-7 h-7 rounded-lg bg-purple-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></span>`,
-  moderation: `<span class="w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></span>`,
-  tickets: `<span class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22 10V6c0-1.11-.9-2-2-2H4c-1.1 0-1.99.89-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2z"/></svg></span>`,
-  utility: `<span class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>`,
+  music: `<span class="w-7 h-7 bg-purple-500 macos-squircle-sm text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" fill="white" fill-opacity="0.22"/><path d="M9.8 15.8V8.2c0-.48.34-.9.81-1l6-1.3c.62-.13 1.2.34 1.2.98v6.62a2.5 2.5 0 1 1-1.6-2.33V8.42l-4.81 1.04v6.34a2.5 2.5 0 1 1-1.6-2.33Z" fill="white"/></svg></span>`,
+  moderation: `<span class="w-7 h-7 bg-blue-500 macos-squircle-sm text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2.5 4.8 5.5v5.5c0 5 3.1 9.6 7.2 11 4.1-1.4 7.2-6 7.2-11V5.5L12 2.5Z" fill="white" fill-opacity="0.34"/><path d="M12 4.8 6.6 7.05v4c0 3.85 2.32 7.4 5.4 8.58 3.08-1.18 5.4-4.73 5.4-8.58v-4L12 4.8Z" fill="white"/><path d="m9.7 12.1 1.55 1.55 3.25-3.4" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+  tickets: `<span class="w-7 h-7 bg-emerald-500 macos-squircle-sm text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M4.5 6.5h15A1.5 1.5 0 0 1 21 8v2.1a2 2 0 0 0 0 3.8V16a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 16v-2.1a2 2 0 0 0 0-3.8V8a1.5 1.5 0 0 1 1.5-1.5Z" fill="white"/><path d="M9.5 6.5v11" stroke="#10b981" stroke-width="1.8" stroke-dasharray="2 2" stroke-linecap="round"/></svg></span>`,
+  utility: `<span class="w-7 h-7 bg-amber-500 macos-squircle-sm text-white flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></span>`,
 };
 
 /**
@@ -373,7 +373,7 @@ function initFluidHeader() {
     const left = element.offsetLeft;
     const width = element.offsetWidth;
     indicator.style.width = `${width}px`;
-    indicator.style.transform = `translateX(${left - 4}px)`;
+    indicator.style.transform = `translateX(${left - 3}px)`;
     indicator.style.opacity = "1";
   }
 
@@ -605,8 +605,9 @@ async function syncDiscordWidget() {
         return `
           <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-xs">
             <div class="flex items-center gap-2 text-white/85 font-medium">
-              <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 3a9 9 0 0 0-9 9v7c0 1.1.9 2 2 2h4v-8H5v-1a7 7 0 0 1 14 0v1h-4v8h4c1.1 0 2-.9 2-2v-7a9 9 0 0 0-9-9Z"/>
+              <svg class="w-4 h-4 text-emerald-500 shrink-0" viewBox="0 0 24 24" fill="none">
+                <path d="M11 5.5 6.8 9H4a1.5 1.5 0 0 0-1.5 1.5v3A1.5 1.5 0 0 0 4 15h2.8l4.2 3.5c.65.54 1.65.08 1.65-.77V6.27c0-.85-1-1.31-1.65-.77Z" fill="currentColor"/>
+                <path d="M15.8 8.8a4.8 4.8 0 0 1 0 6.4M18.6 6.2a8.5 8.5 0 0 1 0 11.6" stroke="currentColor" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round"/>
               </svg>
               <span>${cleanName}</span>
             </div>
